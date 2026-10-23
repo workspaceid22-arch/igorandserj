@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IELTS 7+ · Игорь и Сергей</title>
+<style>
+:root{--bg:#f4f5f9;--card:#fff;--text:#1b1d2a;--muted:#6b7086;--line:#e4e6ef;--igor:#4f6bed;--serg:#f08a24;--ok:#22a06b;--hi:#eef1ff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12131a;--card:#1c1e29;--text:#eceef7;--muted:#9296ad;--line:#2c2f3f;--igor:#7e93ff;--serg:#ffa54d;--ok:#3ccf8e;--hi:#242842;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12131a;--card:#1c1e29;--text:#eceef7;--muted:#9296ad;--line:#2c2f3f;--igor:#7e93ff;--serg:#ffa54d;--ok:#3ccf8e;--hi:#242842;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:520px;margin:0 auto;padding:16px 14px 40px}
+h1{font-size:22px;margin:4px 0 2px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.card h2{font-size:15px;margin:0 0 10px;display:flex;justify-content:space-between;align-items:center}
+.who{display:flex;gap:8px;margin-bottom:12px}
+.who button{flex:1;padding:11px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--text);font-size:15px;font-weight:600}
+.who button.on.i{border-color:var(--igor);background:var(--hi)}
+.who button.on.s{border-color:var(--serg);background:var(--hi)}
+.task{display:flex;align-items:center;gap:12px;width:100%;padding:12px 10px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--text);text-align:left;font-size:16px}
+.task:last-child{border-bottom:0}
+.box{flex:none;width:28px;height:28px;border-radius:9px;border:2px solid var(--line);display:grid;place-items:center;font-size:16px;color:#fff}
+.task.done .box{background:var(--ok);border-color:var(--ok)}
+.task.done .t{color:var(--muted);text-decoration:line-through}
+.t small{display:block;color:var(--muted);font-size:12.5px;text-decoration:none}
+.bar{height:8px;border-radius:8px;background:var(--line);overflow:hidden;margin:2px 0 6px}
+.bar i{display:block;height:100%;background:var(--ok);transition:width .25s}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:12px}
+.days button{padding:7px 0;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:12px;line-height:1.25}
+.days button b{display:block;font-size:15px}
+.days button.sel{border-color:var(--text);background:var(--hi)}
+table{width:100%;border-collapse:separate;border-spacing:4px;font-size:13px;text-align:center}
+th{color:var(--muted);font-weight:500}
+td.n{text-align:left;font-weight:600}
+td.c{border-radius:8px;padding:7px 0;background:var(--line);color:var(--muted);font-weight:600}
+td.c.l1{background:color-mix(in srgb,var(--ok) 35%,var(--card));color:var(--text)}
+td.c.l2{background:color-mix(in srgb,var(--ok) 70%,var(--card));color:#fff}
+td.c.l3{background:var(--ok);color:#fff}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.st{border-radius:12px;padding:12px;background:var(--hi)}
+.st .nm{font-weight:700;font-size:14px}
+.st .big{font-size:26px;font-weight:800;margin:2px 0}
+.st .sm{font-size:12.5px;color:var(--muted)}
+.i{--c:var(--igor)}.s{--c:var(--serg)}
+.st .nm{color:var(--c)}
+.msg{font-size:14px;padding:10px 12px;border-radius:12px;background:var(--hi);margin-bottom:12px}
+.warn{background:#fff3cd;color:#5c4400;font-size:13px;padding:10px 12px;border-radius:12px;margin-bottom:12px}
+.mini{display:flex;gap:6px;flex-wrap:wrap}
+.mini span{font-size:13px;padding:4px 9px;border-radius:999px;background:var(--line);color:var(--muted)}
+.mini span.d{background:var(--ok);color:#fff}
+.foot{color:var(--muted);font-size:12.5px;text-align:center;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎯 IELTS 7+ · Игорь и Сергей</h1>
+  <div class="sub">Отмечаем задачи каждый день и видим прогресс друг друга</div>
+  <div id="warn"></div>
+  <div class="who" id="who"></div>
+  <div id="msg"></div>
+  <div class="days" id="days"></div>
+  <div class="card" id="mine"></div>
+  <div class="card" id="other"></div>
+  <div class="card"><h2>📅 Неделя</h2><div id="week"></div></div>
+  <div class="card"><h2>🏆 Статистика</h2><div class="stats" id="stats"></div></div>
+  <div class="foot">День засчитан, если выполнено ≥ 3 задач из 6</div>
+</div>
+<script>
+var TASKS=[
+ {id:"listen",e:"🎧",t:"Listening",d:"30 минут: подкаст, TED или IELTS-аудио"},
+ {id:"read",e:"📖",t:"Reading",d:"1 текст + вопросы"},
+ {id:"write",e:"✍️",t:"Writing",d:"абзац или эссе, 150+ слов"},
+ {id:"speak",e:"🗣",t:"Speaking",d:"10 минут вслух: ответы на вопросы"},
+ {id:"vocab",e:"🔤",t:"Слова",d:"10 новых слов + повторение"},
+ {id:"gram",e:"📚",t:"Грамматика",d:"1 тема + упражнения"}
+];
+var PEOPLE={igor:{name:"Игорь",cls:"i"},serg:{name:"Сергей",cls:"s"}};
+var THRESH=3, logs={}, db=null, me=null, sel=today();
+
+try{me=localStorage.getItem("ielts_who")}catch(e){}
+if(!PEOPLE[me])me=null;
+
+function pad(n){return n<10?"0"+n:""+n}
+function key(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+function today(){return key(new Date())}
+function shift(k,n){var p=k.split("-"),d=new Date(+p[0],+p[1]-1,+p[2]+n);return key(d)}
+function count(w,d){var l=logs[d+"_"+w];if(!l)return 0;var c=0;TASKS.forEach(function(t){if(l[t.id])c++});return c}
+function last7(){var a=[];for(var i=6;i>=0;i--)a.push(shift(today(),-i));return a}
+var DN=["Вс","Пн","Вт","Ср","Чт","Пт","Сб"];
+function dow(k){var p=k.split("-");return DN[new Date(+p[0],+p[1]-1,+p[2]).getDay()]}
+function dnum(k){return +k.split("-")[2]}
+function streak(w){var d=today(),s=0;if(count(w,d)<THRESH)d=shift(d,-1);while(count(w,d)>=THRESH){s++;d=shift(d,-1)}return s}
+function total(w){var s=0;Object.keys(logs).forEach(function(k){if(k.slice(11)===w)s+=count(w,k.slice(0,10))});return s}
+function other(){return me==="igor"?"serg":"igor"}
+
+function toggle(id){
+  if(!me)return;
+  var k=sel+"_"+me, l=Object.assign({},logs[k]||{});
+  l[id]=!l[id];logs[k]=l;render();
+  if(db){db.collection("log").doc(k).set({who:me,date:sel,tasks:l}).catch(function(){
+    document.getElementById("warn").innerHTML='<div class="warn">Не удалось сохранить. Проверьте доступ и интернет.</div>'})}
+  else{try{localStorage.setItem("ielts_local",JSON.stringify(logs))}catch(e){}}
+}
+function setMe(w){me=w;try{localStorage.setItem("ielts_who",w)}catch(e){}render()}
+function setDay(d){sel=d;render()}
+
+function render(){
+  var who=document.getElementById("who");
+  who.innerHTML="";
+  Object.keys(PEOPLE).forEach(function(w){
+    var b=document.createElement("button");
+    b.className=PEOPLE[w].cls+(me===w?" on":"");
+    b.textContent=(me===w?"✓ ":"")+"Я — "+PEOPLE[w].name;
+    b.onclick=function(){setMe(w)};who.appendChild(b)});
+  var mine=document.getElementById("mine"),oth=document.getElementById("other");
+  if(!me){
+    document.getElementById("msg").innerHTML='<div class="msg">Выберите, кто вы, чтобы начать 👆</div>';
+    mine.style.display=oth.style.display="none";
+  }else{
+    mine.style.display=oth.style.display="";
+    document.getElementById("msg").innerHTML=cheer();
+    drawMine();drawOther();
+  }
+  drawDays();drawWeek();drawStats();
+}
+function cheer(){
+  var o=other(),c=count(o,today()),m=count(me,today()),on=PEOPLE[o].name,t="";
+  if(m>=TASKS.length)t="🔥 Все 6 задач сегодня сделаны. Отличная работа!";
+  else if(c>=THRESH&&m<THRESH)t="👀 "+on+" уже сделал "+c+" из 6 сегодня. Догоняй!";
+  else if(m>=THRESH)t="✅ День засчитан. Можно сделать ещё одну задачу!";
+  else t="Сегодня выполнено "+m+" из 6. Начни с самого лёгкого 💪";
+  return '<div class="msg">'+t+'</div>';
+}
+function drawDays(){
+  var el=document.getElementById("days");el.innerHTML="";
+  last7().forEach(function(d){
+    var b=document.createElement("button");b.className=d===sel?"sel":"";
+    b.innerHTML=dow(d)+"<b>"+dnum(d)+"</b>";b.onclick=function(){setDay(d)};el.appendChild(b)});
+}
+function drawMine(){
+  var l=logs[sel+"_"+me]||{},c=count(me,sel),el=document.getElementById("mine");
+  var h='<h2><span>'+(sel===today()?"Сегодня":"День "+sel.split("-").reverse().slice(0,2).join("."))+'</span><span>'+c+' / '+TASKS.length+'</span></h2>';
+  h+='<div class="bar"><i style="width:'+(c/TASKS.length*100)+'%"></i></div>';
+  TASKS.forEach(function(t){
+    h+='<button class="task'+(l[t.id]?" done":"")+'" data-id="'+t.id+'"><span class="box">'+(l[t.id]?"✓":"")+'</span><span class="t">'+t.e+" "+t.t+'<small>'+t.d+'</small></span></button>'});
+  el.innerHTML=h;
+  Array.prototype.forEach.call(el.querySelectorAll(".task"),function(b){b.onclick=function(){toggle(b.getAttribute("data-id"))}});
+}
+function drawOther(){
+  var o=other(),l=logs[sel+"_"+o]||{},c=count(o,sel),h='<h2><span>'+PEOPLE[o].name+' в этот день</span><span>'+c+' / '+TASKS.length+'</span></h2><div class="mini">';
+  TASKS.forEach(function(t){h+='<span class="'+(l[t.id]?"d":"")+'">'+t.e+" "+t.t+'</span>'});
+  document.getElementById("other").innerHTML=h+'</div>';
+}
+function drawWeek(){
+  var ds=last7(),h='<table><tr><th></th>';
+  ds.forEach(function(d){h+='<th>'+dow(d)+'<br>'+dnum(d)+'</th>'});h+='</tr>';
+  ["igor","serg"].forEach(function(w){
+    h+='<tr><td class="n" style="color:var(--'+(w==="igor"?"igor":"serg")+')">'+PEOPLE[w].name+'</td>';
+    ds.forEach(function(d){var c=count(w,d),lv=c===0?"":c<3?" l1":c<6?" l2":" l3";h+='<td class="c'+lv+'">'+(c||"·")+'</td>'});
+    h+='</tr>'});
+  document.getElementById("week").innerHTML=h+'</table>';
+}
+function drawStats(){
+  var h="";
+  ["igor","serg"].forEach(function(w){
+    var wk=0;last7().forEach(function(d){wk+=count(w,d)});
+    h+='<div class="st '+PEOPLE[w].cls+'"><div class="nm">'+PEOPLE[w].name+'</div><div class="big">🔥 '+streak(w)+'</div><div class="sm">дней подряд</div><div class="sm">За неделю: '+wk+' · Всего: '+total(w)+'</div></div>'});
+  document.getElementById("stats").innerHTML=h;
+}
+
+function load(snap){
+  logs={};
+  snap.docs.forEach(function(d){var x=d.data();if(x&&PEOPLE[x.who]&&/^\d{4}-\d\d-\d\d$/.test(x.date||"")&&x.tasks)logs[x.date+"_"+x.who]=x.tasks});
+  render();
+}
+render();
+(async function(){
+  try{
+    var c=await claude.use("db");
+    if(c){
+      db=c;
+      db.collection("log").onSnapshot(load,function(){document.getElementById("warn").innerHTML='<div class="warn">Нет доступа к общим данным.</div>'});
+      return;
+    }
+  }catch(e){}
+  document.getElementById("warn").innerHTML='<div class="warn">Общая синхронизация недоступна: данные сохраняются только на этом устройстве.</div>';
+  try{logs=JSON.parse(localStorage.getItem("ielts_local")||"{}")}catch(e){}
+  render();
+})();
+</script>
+</body>
+</html>
